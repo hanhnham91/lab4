@@ -18,6 +18,7 @@ public class StudentCourses {
     public Integer courseId;
 
     public String semester;
+    public float score;
 
 
     public static StudentCourses fromContentValues(ContentValues contentValues) {
@@ -30,6 +31,9 @@ public class StudentCourses {
         }
         if (contentValues.containsKey("semester")) {
             s.semester = contentValues.getAsString("semester");
+        }
+        if (contentValues.containsKey("score")) {
+            s.score = contentValues.getAsFloat("score");
         }
         return s;
     }

@@ -55,7 +55,11 @@ public interface StudentDAO {
 
     @Transaction
     @Query("SELECT * FROM student")
-    public List<RelationModel> getStudentWithCourses();
+    public List<RelationModel> getAllStudentWithCourses();
+
+    @Transaction
+    @Query("SELECT * FROM student where studentId = :studentId")
+    public List<RelationModel> getStudentWithCourses(long studentId);
 
 
     @Insert

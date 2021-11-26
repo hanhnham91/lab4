@@ -39,19 +39,21 @@ public class StudentContentProvider extends ContentProvider {
     public static final String COURSE_TABLE_NAME = "course";
     public static final String STUDENT_COURSE = "studentcourse";
 
-    public static final int ID_STUDENT_WITH_COURSE_DATA = 0;
     public static final int ID_STUDENT_DATA = 1;
     public static final int ID_STUDENT_DATA_ITEM = 2;
     public static final int ID_SC_DATA = 3;
     public static final int ID_SC_DATA_ITEM = 4;
     public static final int ID_COURSE_DATA = 5;
     public static final int ID_COURSE_DATA_ITEM = 6;
+    public static final int ID_STUDENT_WITH_COURSE_DATA = 7;
+    public static final int ID_STUDENT_WITH_COURSE_DATA_ITEM = 8;
 
 
     public static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
         uriMatcher.addURI(AUTHORITY, STUDENT_COURSE, ID_STUDENT_WITH_COURSE_DATA);
+        uriMatcher.addURI(AUTHORITY, STUDENT_COURSE + "/*", ID_STUDENT_WITH_COURSE_DATA_ITEM);
 
         uriMatcher.addURI(AUTHORITY, STUDENT_TABLE_NAME, ID_STUDENT_DATA);
         uriMatcher.addURI(AUTHORITY, STUDENT_TABLE_NAME + "/*", ID_STUDENT_DATA_ITEM);
@@ -85,16 +87,26 @@ public class StudentContentProvider extends ContentProvider {
                 }
 
             case ID_STUDENT_WITH_COURSE_DATA:
-                List<RelationModel> rs = studentDao.getStudentWithCourses();
+                List<RelationModel> rs = studentDao.getAllStudentWithCourses();
                 MatrixCursor cursor1 = new MatrixCursor(new String[]{"studentId", "data"});
-                for (RelationModel person : rs) {
+                for (RelationModel s : rs) {
                     Gson gson = new Gson();
-                    String json = gson.toJson(person);
-                    cursor1.newRow().add("studentId", person.student.studentId).add("data", json);
+                    String json = gson.toJson(s);
+                    cursor1.newRow().add("studentId", s.student.studentId).add("data", json);
                 }
                 cursor1.setNotificationUri(getContext().getContentResolver(), uri);
                 return cursor1;
 
+            case ID_STUDENT_WITH_COURSE_DATA_ITEM:
+                List<RelationModel> student = studentDao.getStudentWithCourses(ContentUris.parseId(uri));
+                MatrixCursor cursor2 = new MatrixCursor(new String[]{"studentId", "data"});
+                for (RelationModel s : student) {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(s);
+                    cursor2.newRow().add("studentId", s.student.studentId).add("data", json);
+                }
+                cursor2.setNotificationUri(getContext().getContentResolver(), uri);
+                return cursor2;
             case ID_STUDENT_DATA_ITEM:
                 cursor = studentDao.getStudent(ContentUris.parseId(uri));
                 return cursor;
@@ -182,7 +194,6 @@ public class StudentContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI:" + uri);
         }
-
     }
 
     @Override
