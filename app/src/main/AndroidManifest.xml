@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lab4">
 
+    <permission android:name="com.example.lab4.provider.StudentContentProvider.PERMISSION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,11 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
         <provider
             android:authorities="com.example.lab4.provider"
-            android:name=".provider.StudentContentProvider"
+            android:name="com.example.lab4.provider.StudentContentProvider"
             android:exported="true"/>
-
 
     </application>
 
