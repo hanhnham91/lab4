@@ -26,6 +26,9 @@ public class Student {
     @ColumnInfo(name = "dob")
     public String dob;
 
+    @ColumnInfo(name = "finalScore")
+    public float finalScore;
+
 
 
     public static Student fromContentValues(ContentValues contentValues) {
@@ -47,6 +50,10 @@ public class Student {
         }
         if (contentValues.containsKey("dob")) {
             s.dob =(contentValues.getAsString("dob"));
+        }
+
+        if (contentValues.containsKey("finalScore")) {
+            s.finalScore =(contentValues.getAsFloat("finalScore"));
         }
         return s;
     }

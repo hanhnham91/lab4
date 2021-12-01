@@ -39,12 +39,15 @@ public class ProviderUnitTest {
         contentResolver = InstrumentationRegistry.getInstrumentation().getContext().getContentResolver();
     }
 
-//    @Test
-//    public void insertTestData() {
-//        insertStudents();
-//        insertCourses();
-//        insertStudentCOurses();
-//    }
+    @Test
+    public void insertTestData() {
+        Cursor cursor3 = contentResolver.query(Uri.parse(STUDENT_URI), null, null, null, null);
+        if (cursor3.getCount() ==0) {// check if init data is not inserted-> insert test data
+            insertStudents();
+            insertCourses();
+            insertStudentCOurses();
+        }
+    }
 
     @Test
     public void findAll() {
@@ -117,6 +120,7 @@ public class ProviderUnitTest {
         rs.put("email", name.replaceAll("\\W", "").toLowerCase()+"@email.com");
         rs.put("tel", "987654321");
         rs.put("dob", "1994-11-05");
+        rs.put("finalScore", "7.8");
         return rs;
     }
 
