@@ -52,12 +52,12 @@ public class ProviderUnitTest {
     @Test
     public void findAll() {
         Cursor cursor3 = contentResolver.query(Uri.parse(STUDENT_URI), null, null, null, null);
-
 //        Cursor cursor3 = contentResolver.query(Uri.parse(Student_With_COURSES_URI), null, null, null, null);
         assertNotNull(cursor3);
         Log.d(TAG, "querySCs: " + DatabaseUtils.dumpCursorToString(cursor3));
         if (cursor3.moveToFirst()) {
             do {
+                //
             }
             while (cursor3.moveToNext());
         }
